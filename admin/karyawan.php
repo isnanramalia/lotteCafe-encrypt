@@ -2,7 +2,9 @@
 $title = 'Karyawan';
 require 'functions.php';
 require 'layout_header.php';
+require '../db/encrypt.php';
 $db = dbConnect();
+$keyMatrixArray = generateMatrix('keyword');
 
 if (isset($_POST['keyword'])) {
     $keyword = $_POST['keyword'];
@@ -86,16 +88,18 @@ $i = 1;
                             </tr>
                         </thead>
                         <tbody>
+                            
                             <?php foreach ($data as $karyawan) : ?>
-                                <tr>
+                                <!-- menampilkan data setelah di dekrip -->
+                               <tr>
                                     <td><?= $i++; ?></td>
-                                    <td class="hidden"><?= $karyawan['id_karyawan']; ?></td>
-                                    <td><?= $karyawan['nm_karyawan']; ?></td>
-                                    <td><?= $karyawan['noTlp']; ?></td>
-                                    <td><?= $karyawan['jabatan']; ?></td>
+                                    <td class="hidden"><?= $karyawan['id_karyawan'] ?></td>
+                                    <td><?= decrypt($keyMatrixArray, $karyawan['nm_karyawan']); ?></td>
+                                    <td><?= decrypt($keyMatrixArray, $karyawan['noTlp']); ?></td>
+                                    <td><?= decrypt($keyMatrixArray, $karyawan['jabatan']); ?></td>
                                     <td><?= $karyawan['username']; ?></td>
                                     <td align="center">
-                                        <div class="btn-group">
+                                    <div class="btn-group">
                                             <a href="karyawan-ubah.php?id=<?= base64_encode($karyawan['id_karyawan']); ?>" title="Edit" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                                             <a href="karyawan-hapus.php?id=<?= base64_encode($karyawan['id_karyawan']); ?>" onclick="return confirm('Hapus data yang dipilih?');" title="Hapus" class="btn btn-danger"><i class="fa fa-trash"></i></a>
                                         </div>

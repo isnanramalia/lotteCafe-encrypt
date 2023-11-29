@@ -127,18 +127,4 @@ function decrypt($mat, $message)
     // return $ptext;
 }
 
-// $plaintext = 'haohaoZHANGhao_250700';
-
-// $keyMatrixArray = generateMatrix("akuma no ko");
-
-// echo "Actual Message :<br> $plaintext\n";
-
-// $formattedMessage = formatMessage($plaintext);
-// echo "<br><br>Formatted Message : <br>$formattedMessage\n";
-
-// $ciphertext = encrypt($keyMatrixArray, $formattedMessage);
-// echo "<br><br>Encrypted Message :<br> $ciphertext\n";
-
-// $decryptedMessage = decrypt($keyMatrixArray, $ciphertext);
-// echo "<br><br>Decrypted Message :<br> $decryptedMessage\n";
 ?>

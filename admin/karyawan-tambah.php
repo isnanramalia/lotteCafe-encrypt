@@ -1,23 +1,36 @@
 <?php
 $title = 'Tambah karyawan';
 require 'functions.php';
+require '../db/encrypt.php';
 $db = dbConnect();
 
 if (isset($_POST['btn_simpan'])) {
     if ($db->errno == 0) {
+        // fungsi untuk mengenkripsi
+        $keyMatrixArray = generateMatrix('keyword');
         $nama = $db->escape_string($_POST['nama']);
-        $noTlp = $db->escape_string($_POST['noTlp']);
-        $jabatan = $db->escape_string($_POST['jabatan']);
-        $username = $db->escape_string($_POST['username']);
-        $password = $db->escape_string(md5($_POST['password']));
+        $encryptedNama = encrypt($keyMatrixArray, formatMessage($nama));
 
-        $query = "SELECT * FROM karyawan WHERE username = '$username'";
-        $data = row_array($conn, $query);
-        if ($data['username'] == 0) {
-            $query = "INSERT INTO karyawan (nm_karyawan,noTlp,jabatan,username,pass)
-                VALUES ('$nama','$noTlp','$jabatan','$username','$password')";
+        $noTlp = $db->escape_string($_POST['noTlp']);
+        $encryptedNoTlp = encrypt($keyMatrixArray, $noTlp);
+
+        $jabatan = $db->escape_string($_POST['jabatan']);
+
+        $username = $db->escape_string($_POST['username']);
+
+        $password = $db->escape_string($_POST['password']);
+        $encryptedPassword = encrypt($keyMatrixArray, $password);
+
+        // cek username sudah ada atau belum
+        $queryCheckUsername = "SELECT * FROM karyawan WHERE username = '$username'";
+        $dataUsername = row_array($conn, $queryCheckUsername);
+        if ($dataUsername['username'] == 0) {
+            // Query untuk menyimpan data terenkripsi ke dalam database
+            $query = "INSERT INTO karyawan (nm_karyawan, noTlp, jabatan, username, pass)
+                VALUES ('$encryptedNama', '$encryptedNoTlp', '$jabatan', '$username', '$encryptedPassword')";
 
             $execute = execute($conn, $query);
+
             if ($execute == 1) {
                 header('location:karyawan.php?msg=1');
             } else {
