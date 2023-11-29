@@ -3,7 +3,7 @@ session_start();
 $db = mysqli_connect('localhost', 'root', '', 'db_lottie_cafe');
 
 $username = $db->escape_string($_POST['username']);
-$password = $db->escape_string(md5($_POST['password']));
+$password = $db->escape_string($_POST['password']);
 $query = "SELECT * FROM karyawan where username='$username'";
 $row = mysqli_query($db, $query);
 $data = mysqli_fetch_assoc($row);

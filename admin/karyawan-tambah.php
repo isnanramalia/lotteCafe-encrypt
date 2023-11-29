@@ -11,10 +11,13 @@ if (isset($_POST['btn_simpan'])) {
         $nama = $db->escape_string($_POST['nama']);
         $encryptedNama = encrypt($keyMatrixArray, formatMessage($nama));
 
-        $noTlp = $db->escape_string($_POST['noTlp']);
-        $encryptedNoTlp = encrypt($keyMatrixArray, $noTlp);
+        // $noTlp = $db->escape_string($_POST['noTlp']);
+        // $encryptedNoTlp = encrypt($keyMatrixArray, $noTlp);
 
         $jabatan = $db->escape_string($_POST['jabatan']);
+
+        $alamat = $db->escape_string($_POST['alamat']);
+        $encryptedAlamat = encrypt($keyMatrixArray, $alamat);
 
         $username = $db->escape_string($_POST['username']);
 
@@ -26,9 +29,9 @@ if (isset($_POST['btn_simpan'])) {
         $dataUsername = row_array($conn, $queryCheckUsername);
         if ($dataUsername['username'] == 0) {
             // Query untuk menyimpan data terenkripsi ke dalam database
-            $query = "INSERT INTO karyawan (nm_karyawan, noTlp, jabatan, username, pass)
-                VALUES ('$encryptedNama', '$encryptedNoTlp', '$jabatan', '$username', '$encryptedPassword')";
-
+            $query = "INSERT INTO karyawan (nm_karyawan, jabatan, username, pass, alamat)
+                VALUES ('$encryptedNama', '$jabatan', '$username', '$encryptedPassword', '$encryptedAlamat')";
+                // noTlp, '$encryptedNoTlp', 
             $execute = execute($conn, $query);
 
             if ($execute == 1) {
@@ -65,9 +68,9 @@ require 'layout_header.php';
                         <input type="text" name="nama" class="form-control" maxlength="30" required oninvalid="this.setCustomValidity('Silahkan isi nama karyawan')" oninput="setCustomValidity('')">
                     </div>
                     <div class="form-group">
-                        <label>No. Telepon</label>
+                        <!-- <label>No. Telepon</label>
                         <input type="text" name="noTlp" class="form-control" maxlength="15" required oninvalid="this.setCustomValidity('Silahkan isi no. telepon')" oninput="setCustomValidity('')">
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label>Jabatan</label>
                         <select name="jabatan" class="form-control" required oninvalid="this.setCustomValidity('Silahkan pilih jabatan')" oninput="setCustomValidity('')">
@@ -75,6 +78,10 @@ require 'layout_header.php';
                             <option value="Admin">Admin</option>
                             <option value="Kasir">Kasir</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Alamat</label>
+                        <input type="text" name="alamat" class="form-control" maxlength="200" required oninvalid="this.setCustomValidity('Silahkan isi alamat karyawan')" oninput="setCustomValidity('')">
                     </div>
                     <div class="form-group">
                         <label>Username</label>

@@ -9,7 +9,7 @@ $keyMatrixArray = generateMatrix('keyword');
 if (isset($_POST['keyword'])) {
     $keyword = $_POST['keyword'];
     $data = mysqli_query($db, "SELECT * FROM karyawan WHERE nm_karyawan lIKE '%" . $keyword . "%' 
-                                OR noTlp LIKE '%" . $keyword . "%'
+                                // OR noTlp LIKE '%" . $keyword . "%'
                                 OR jabatan LIKE '%" . $keyword . "%'
                                 OR username LIKE '%" . $keyword . "%'");
 } else {
@@ -81,8 +81,9 @@ $i = 1;
                                 <th>#</th>
                                 <th class="hidden"></th>
                                 <th>Nama Karyawan</th>
-                                <th>No. Telepon</th>
+                                <!-- <th>No. Telepon</th> -->
                                 <th>Jabatan</th>
+                                <th>Alamat</th>
                                 <th>Username</th>
                                 <th><i class="fa fa-cog fa-fw"></i> Aksi</th>
                             </tr>
@@ -95,8 +96,9 @@ $i = 1;
                                     <td><?= $i++; ?></td>
                                     <td class="hidden"><?= $karyawan['id_karyawan'] ?></td>
                                     <td><?= decrypt($keyMatrixArray, $karyawan['nm_karyawan']); ?></td>
-                                    <td><?= decrypt($keyMatrixArray, $karyawan['noTlp']); ?></td>
-                                    <td><?= decrypt($keyMatrixArray, $karyawan['jabatan']); ?></td>
+                                    <!-- <td><?= decrypt($keyMatrixArray, $karyawan['noTlp']); ?></td> -->
+                                    <td><?= $karyawan['jabatan'];?></td>
+                                    <td><?= decrypt($keyMatrixArray, $karyawan['alamat']); ?></td>
                                     <td><?= $karyawan['username']; ?></td>
                                     <td align="center">
                                     <div class="btn-group">
